@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Role;
+// use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Hash;
 use DB;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Arr;
 
 class UserController extends Controller
 {
@@ -20,16 +22,15 @@ class UserController extends Controller
     public function index()
     {
       
-      $user=User::all();
-
-      return view('admin.user.index',compact('user'));
-
+      $user=User::orderBy('id','DESC')->paginate(5);
+      return view('admin.user.index',compact('user'))->with('i', ($request->input('page', 1) - 1) * 5);
     }
     
+
     // User Create 
     public function create()
     {
-        $roles = Role::all(); //DB::table('categories')->get();
+        $roles = Role::pluck('rolename','rolename')->all(); //DB::table('categories')->get();
         // dd( $users);
         return view('admin.user.create',compact('roles'));
     }
@@ -58,14 +59,14 @@ class UserController extends Controller
        $user->save();
         
          $notification = array('messege' =>'user Inserted!','alert-type'=>'success');
-         return redirect()->back()->with($notification);
+         return redirect()->route('user.index')->back()->with($notification);
      }
 
 
     // data destory
     public function destroy($id)
     {
-        Subcategory::destroy($id);
+        User::destroy($id);
         $notification = array('messege' =>'Sub Category deleted!','alert-type'=>'success');
         return redirect()->back()->with($notification);
 
@@ -73,9 +74,10 @@ class UserController extends Controller
     //edit 
     public function edit($id)
     {
-        $roles=Role::all();
+        $roles=Role::pluck('rolename','rolename')->all();
         $data = User::find($id);
-        return view('admin.user.edit',compact('roles','data'));
+        $userRole = $user->roles->pluck('name','name')->all();
+        return view('admin.user.edit',compact('roles','data','userRole'));
     }
 
     public function update(Request $request, $id)

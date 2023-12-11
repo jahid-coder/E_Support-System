@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -45,7 +46,7 @@ Route::post('/password/update', [HomeController::class, 'update_password'])->mid
 
 
 //Role Create
-Route::group(['middleware' => 'auth', 'admin'], function(){
+Route::group(['middleware' => ['auth', 'admin']], function(){
     
     Route::get('role/index', [RoleController::class, 'index'])->middleware('auth','admin')->name('role.index');
     Route::get('role/create', [RoleController::class,'create'])->middleware('auth','admin')->name('role.create');
@@ -62,6 +63,9 @@ Route::group(['middleware' => 'auth', 'admin'], function(){
     Route::get('user/edit/{id}', [UserController::class,'edit'])->middleware('auth','admin')->name('user.edit');
     Route::post('user/update/{id}', [UserController::class,'update'])->middleware('auth','admin')->name('user.update');
     Route::get('user/delete/{id}', [UserController::class,'destroy'])->middleware('auth','admin')->name('user.delete');
+
+    // Product 
+    Route::resource('products', ProductController::class);
 
 });
 

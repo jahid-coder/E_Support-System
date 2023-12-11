@@ -25,10 +25,12 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">All Roles</h3>
+                                <h2>Role Management</h2>
                                 <br>
                                 <br>
-                                <a href="{{route('role.create')}}" class="btn btn-sm btn-success" style="float:left;"> add role </a>
+                                @can('role-create')
+                                    <a href="{{route('role.create')}}" class="btn btn-sm btn-success" style="float:left;"> add role </a>
+                                @endcan
                             </div>
                             <!-- /.card-header -->
                             
