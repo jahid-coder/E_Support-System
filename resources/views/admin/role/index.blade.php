@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Role</h1>
+                <h2>Role Management</h2>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -25,10 +25,10 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h2>Role Management</h2>
+                                <h3 class="card-title">All Roles</h3>
                                 <br>
                                 <br>
-                                @can('role-create')
+                                @can('role-list')
                                     <a href="{{route('role.create')}}" class="btn btn-sm btn-success" style="float:left;"> add role </a>
                                 @endcan
                             </div>
@@ -50,8 +50,12 @@
                                             <td>{{++$key}}</td>
                                             <td>{{$row->rolename}}</td>
                                             <td>
-                                                <a href="{{route('role.edit',$row->id)}}" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></a>
-                                                <a href="{{route('role.delete',$row->id)}}" class="btn btn-sm btn-danger delete"><i class="fa fa-trash"></i></a>
+                                                @can('role-list')
+                                                    <a href="{{route('role.edit',$row->id)}}" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></a>
+                                                @endcan
+                                                @can('role-list')
+                                                    <a href="{{route('role.delete',$row->id)}}" class="btn btn-sm btn-danger delete"><i class="fa fa-trash"></i></a>
+                                                @endcan
                                             </td>
                                         </tr>
                                      @endforeach

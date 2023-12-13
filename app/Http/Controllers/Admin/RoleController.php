@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-// use App\Models\Role;
+//use App\Models\Role;
 use DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Auth;
+
 
 
 class RoleController extends Controller
@@ -22,19 +26,17 @@ class RoleController extends Controller
         $this->middleware('permission:role-delete', ['only' => ['destroy']]);
     }
 
-    public function index()
+    public function index(Request $request): View
     {
-       // query builder
-       //$role = DB::table('roles')->get();
-      //elequent
-      $role=Role::orderBy('id','DESC')->paginate(5);
+      
+      $role = Role::orderBy('id','DESC')->paginate(5);
       return view('admin.role.index',compact('role')) ->with('i', ($request->input('page', 1) - 1) * 5);
 
     }
     
     //create 
 
-    public function Create()
+    public function Create(): View
     {
         $permission = Permission::get();
         return view('admin.role.create',compact('permission'));
@@ -42,7 +44,7 @@ class RoleController extends Controller
     }
 
     // //data store
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $this->validate($request, [
             'rolename' => 'required|unique:roles,rolename',
@@ -59,19 +61,19 @@ class RoleController extends Controller
         //return redirect()->back()->with('success','successfully inserted!');
     }
 
-    public function show($id)
+    public function show($id): View
     {
         $role = Role::find($id);
         $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
             ->where("role_has_permissions.role_id",$id)
             ->get();
     
-        return view('roles.show',compact('role','rolePermissions'));
+        return view('admin.role.show',compact('role','rolePermissions'));
     }
 
 
     // //data edit
-    public function edit($id)
+    public function edit($id): View
     {
         
         
@@ -86,7 +88,7 @@ class RoleController extends Controller
 
     // // data update
 
-    public function update(Request $request,$id)
+    public function update(Request $request,$id): RedirectResponse
     {
         $this->validate($request, [
             'rolename' => 'required',
@@ -105,7 +107,7 @@ class RoleController extends Controller
     }
 
     // // data destory
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
 
         // DB::table('categories')->where('id',$id)->delete();
@@ -115,7 +117,7 @@ class RoleController extends Controller
 
         Role::destroy($id);
         $notification = array('messege' =>'role deleted!','alert-type'=>'success');
-        return redirect()->route('roles.index')->back()->with($notification);
+        return redirect()->route('role.index')->back()->with($notification);
 
         // // $category->update([
         // //     'category_name'=>$request->category_name,
