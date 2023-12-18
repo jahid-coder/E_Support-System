@@ -50,11 +50,14 @@
                                             <td>{{++$key}}</td>
                                             <td>{{$row->rolename}}</td>
                                             <td>
+                                                
+                                                    <a href="{{route('role.show',$row->id)}}" class="btn btn-sm btn-info"><i class="<i class="fa-solid fa-eye"></i>"></i></a>
+                                        
                                                 @can('role-list')
                                                     <a href="{{route('role.edit',$row->id)}}" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></a>
                                                 @endcan
                                                 @can('role-list')
-                                                    <a href="{{route('role.delete',$row->id)}}" class="btn btn-sm btn-danger delete"><i class="fa fa-trash"></i></a>
+                                                    <a href="{{route('role.delete',$row->id)}}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
                                                 @endcan
                                             </td>
                                         </tr>

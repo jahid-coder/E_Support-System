@@ -29,8 +29,8 @@ class RoleController extends Controller
     public function index(Request $request): View
     {
       
-      $role = Role::orderBy('id','DESC')->paginate(5);
-      return view('admin.role.index',compact('role')) ->with('i', ($request->input('page', 1) - 1) * 5);
+      $role = Role::orderBy('id','DESC')->paginate(10);
+      return view('admin.role.index',compact('role'));
 
     }
     
@@ -46,29 +46,31 @@ class RoleController extends Controller
     // //data store
     public function store(Request $request): RedirectResponse
     {
+       
+        //dd($request);
         $this->validate($request, [
             'rolename' => 'required|unique:roles,rolename',
             'permission' => 'required',
         ]);
     
         $role = Role::create(['rolename' => $request->input('rolename')]);
-        $role->syncPermissions($request->input('permission'));
+    
+         //$role->syncPermissions($request->input('permission'));
     
 
         $notification = array('messege' =>'role Inserted!','alert-type'=>'success');
-        return redirect()->route('role.index')->back()->with($notification);
+        return redirect()->route('role.index')->with($notification);
 
         //return redirect()->back()->with('success','successfully inserted!');
     }
 
     public function show($id): View
     {
-        $role = Role::find($id);
+        $roles = Role::find($id);
         $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
             ->where("role_has_permissions.role_id",$id)
             ->get();
-    
-        return view('admin.role.show',compact('role','rolePermissions'));
+         return view('admin.role.show',compact('roles','rolePermissions'));
     }
 
 
@@ -110,25 +112,12 @@ class RoleController extends Controller
     public function destroy($id): RedirectResponse
     {
 
-        // DB::table('categories')->where('id',$id)->delete();
-        // return redirect()->back();
-        // $category=Category::find($id); // get the record
-        // $category->delete();
-
+       //dd($id);
         Role::destroy($id);
         $notification = array('messege' =>'role deleted!','alert-type'=>'success');
-        return redirect()->route('role.index')->back()->with($notification);
+        return redirect()->route('role.index')->with($notification);
 
-        // // $category->update([
-        // //     'category_name'=>$request->category_name,
-        // //     'category_slug' =>Str::of($request->category_name)->slug('-'),
-        // // ]);
-
-        // $category->category_name = $request->category_name;
-        // $category->category_slug = Str::of($request->category_name)->slug('-');
-        // $category->save();
-
-        // return redirect()->route('category.index');
+       
 
     }
 

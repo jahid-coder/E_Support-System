@@ -17,16 +17,25 @@
                         <form action ="{{route('role.update',$data->id)}}" method="post">
                            @csrf
                               
-                              <div class="form-group">
-                                 <label for="exampleInputStudentName">Role Name<span class="text-danger">*</span></label>
-                                 <input type="text" name="rolename" class="form-control @error('rolename') is-invalid @enderror" 
-                                 value="{{$data->rolename}}" required>
-                                    @error('rolename')
-                                       <span class="invalid-feedback" role="alert">
-                                          <strong>{{$message}}</strong>
-                                       </span>
-                                    @enderror
-                              </div>
+                           <div class="form-group">
+                                          <label for="exampleInputStudentName">Role Name<span class="text-danger">*</span></label>
+                                          <input type="text" name="rolename" class="form-control @error('rolename') is-invalid @enderror" placeholder="Enter role Name"
+                                          value="{{$data->rolename}}"  required>
+                                             @error('rolename')
+                                                <span class="invalid-feedback" role="alert">
+                                                   <strong>{{$message}}</strong>
+                                                </span>
+                                             @enderror
+                                    </div>
+                                    <div class="form-group">
+                                          <label for="exampleInputStudentName">Permission<span class="text-danger">*</span></label>
+                                          <br/>
+                                          @foreach($permission as $value)
+                                                <label>{{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
+                                                {{ $value->name }}</label>
+                                          <br/>
+                                          @endforeach
+                                    </div>
                               <button type="submit" class="btn btn-primary">Update</button>
                         </form>
 

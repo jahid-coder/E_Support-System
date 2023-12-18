@@ -18,7 +18,7 @@ class ProductController extends Controller
     {
        
         $this->middleware('auth');
-        //dd($this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]));
+        $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
         $this->middleware('permission:product-create', ['only' => ['create','store']]);
         $this->middleware('permission:product-edit', ['only' => ['edit','update']]);
         $this->middleware('permission:product-delete', ['only' => ['destroy']]);
