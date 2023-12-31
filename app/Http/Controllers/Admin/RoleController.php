@@ -64,7 +64,7 @@ class RoleController extends Controller
         //return redirect()->back()->with('success','successfully inserted!');
     }
 
-    public function show($id): View
+    public function show($id)
     {
         $roles = Role::find($id);
         $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
@@ -109,7 +109,7 @@ class RoleController extends Controller
     }
 
     // // data destory
-    public function destroy($id): RedirectResponse
+    public function destroy($id)
     {
 
        //dd($id);

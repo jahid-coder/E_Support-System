@@ -58,15 +58,19 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('role/detail/{id}', [RoleController::class,'show'])->middleware('auth')->name('role.show');
 
 
-    //User Create
-    Route::get('user/index', [UserController::class, 'index'])->middleware('auth')->name('user.index');
-    Route::get('user/create', [UserController::class,'create'])->middleware('auth')->name('user.create');
-    Route::post('user/store', [UserController::class,'store'])->middleware('auth')->name('user.store');
-    Route::get('user/edit/{id}', [UserController::class,'edit'])->middleware('auth')->name('user.edit');
-    Route::post('user/update/{id}', [UserController::class,'update'])->middleware('auth')->name('user.update');
-    Route::get('user/delete/{id}', [UserController::class,'destroy'])->middleware('auth')->name('user.delete');
+    // //User Create
+     Route::get('user/index', [UserController::class, 'index'])->middleware('auth')->name('user.index');
+    // Route::get('user/create', [UserController::class,'create'])->middleware('auth')->name('user.create');
+    // Route::post('user/store', [UserController::class,'store'])->middleware('auth')->name('user.store');
+    // Route::get('user/edit/{id}', [UserController::class,'edit'])->middleware('auth')->name('user.edit');
+    // Route::post('user/update/{id}', [UserController::class,'update'])->middleware('auth')->name('user.update');
+    // Route::get('user/delete/{id}', [UserController::class,'destroy'])->middleware('auth')->name('user.delete');
+
+
 
     // Product 
+   // Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
     Route::resource('products', ProductController::class);
 
 });
